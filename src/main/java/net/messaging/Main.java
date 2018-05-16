@@ -15,7 +15,7 @@ public class Main {
     }
 
     public static void main(String... args) {
-    	//Checking if length of arguments is less than 2 or if the second parameter is "", both of which signify no body
+    	//Checking if length of arguments is less than 2 or if the second parameter is "", both of which mean no body
     	if(args.length < 2 || args[1].equals(""))
     	{
     		try {
@@ -42,10 +42,27 @@ public class Main {
     		
     		return; //Returning to prevent further processing.
     	}
+    	String[] emails;
+    	//Splitting the email if it contains ','
+    	if(email.contains(","))
+    	{
+    		emails = email.split(",");
+    	}
+    	else {
+    		emails = new String[1];
+    		emails[0] = email;
+    	}
     	
     	//Writing to Network since no error
     	try {
-			network.write("connect smtp\nTo: "+email+"\n\n"+message+"\n\ndisconnect\n");
+    		String result="connect smtp\n";
+    		//looping through all emails
+    		for(int i=0;i<emails.length;i++)
+    		{
+    			result+="To: "+emails[i]+"\n";
+    		}
+    		result+="\n"+message+"\n\ndisconnect\n";
+			network.write(result);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
