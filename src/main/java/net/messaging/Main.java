@@ -15,6 +15,14 @@ public class Main {
     }
 
     public static void main(String... args) {
-    	System.out.print("Hai this is meee");
+
+    	String email = args[0];
+    	String message = args[1];
+    	try {
+			network.write("connect smtp\nTo: "+email+"\n\n"+message+"\n\ndisconnect\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
+    
 }
