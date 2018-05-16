@@ -30,7 +30,7 @@ public class EndToEndTest {
         consoleShouldReceive(NO_OUTPUT);
     }
 
-     @Test public void sendAnEmail_AnotherExample_story1() {
+    @Ignore @Test public void sendAnEmail_AnotherExample_story1() {
         Main.main("sally@example.com", "Greetings.\nHow's it going?");
         networkShouldReceive("connect smtp\n" +
                 "To: sally@example.com\n" +
@@ -42,19 +42,19 @@ public class EndToEndTest {
         consoleShouldReceive(NO_OUTPUT);
     }
 
-     @Test public void showAnErrorAndDoNotSendIfTheEmailAddressIsInvalid_story2() {
+    @Ignore @Test public void showAnErrorAndDoNotSendIfTheEmailAddressIsInvalid_story2() {
         Main.main("noatsign", "Hi there!");
         networkShouldReceive(NO_OUTPUT);
         consoleShouldReceive("Invalid email address: noatsign\n");
     }
 
-     @Test public void showAnErrorAndDoNotSendIfTheBodyIsInvalid_story3() {
+    @Ignore @Test public void showAnErrorAndDoNotSendIfTheBodyIsInvalid_story3() {
         Main.main("dinah@example.com", "");
         networkShouldReceive(NO_OUTPUT);
         consoleShouldReceive("Cannot send an email with no body.\n");
     }
 
-     @Test public void sendAnEmailToMultipleAddresses_story4() {
+    @Ignore @Test public void sendAnEmailToMultipleAddresses_story4() {
         Main.main("sally@example.com,joe@example.com", "Hi everyone!");
         networkShouldReceive("connect smtp\n" +
                 "To: sally@example.com\n" +
@@ -66,13 +66,13 @@ public class EndToEndTest {
         consoleShouldReceive(NO_OUTPUT);
     }
 
-     @Test public void betterErrorHandlingsForMultipleAddresses_story5() {
+    @Ignore @Test public void betterErrorHandlingsForMultipleAddresses_story5() {
         Main.main("sallyatexample.com,joeatexample.com", "Hi everyone!");
         networkShouldReceive(NO_OUTPUT);
         consoleShouldReceive("Invalid email addresses: sallyatexample.com joeateasmple.com\n");
     }
 
-     @Test public void sendAMessageInAnotherFormat_story6() {
+    @Ignore @Test public void sendAMessageInAnotherFormat_story6() {
         Main.main("-im", "leslie@chat.example.com", ":-) hey there!");
         networkShouldReceive("connect chat\n" +
                 "<leslie@chat.example.com>(:-) hey there!)\n" +
@@ -80,7 +80,7 @@ public class EndToEndTest {
         consoleShouldReceive(NO_OUTPUT);
     }
 
-     @Test public void chatsToMultipleAddressesGetSentIndividually_story7() {
+    @Ignore @Test public void chatsToMultipleAddressesGetSentIndividually_story7() {
         Main.main("-im", "leslie@chat.example.com,joey@chat.example.com", "Hello.");
         networkShouldReceive("connect chat\n" +
                 "<leslie@chat.example.com>(Hello.)\n" +
