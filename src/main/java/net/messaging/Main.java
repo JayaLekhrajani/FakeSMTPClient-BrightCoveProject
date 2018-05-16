@@ -15,7 +15,17 @@ public class Main {
     }
 
     public static void main(String... args) {
-
+    	//Checking if length of arguments is less than 2 or if the second parameter is "", both of which signify no body
+    	if(args.length < 2 || args[1].equals(""))
+    	{
+    		try {
+				console.write("Cannot send an email with no body.\n");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    		return;
+    	}
+    	
     	String email = args[0];
     	String message = args[1];
     	
