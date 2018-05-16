@@ -111,10 +111,15 @@ public class Main {
 	    		result+="\n"+message+"\n\ndisconnect\n";
 				network.write(result);
 			} catch (IOException e) {
-				e.printStackTrace();
+				try {
+					console.write("Connection error. Please try again.\n");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
     	}
-    	
+    	//If Protocol is IM
     	else if("-im".equals(protocol))
     	{
     		try {
@@ -128,7 +133,12 @@ public class Main {
     			network.write(result);
     		}
     		catch(IOException e) {
-    			e.printStackTrace();
+    			try {
+					console.write("Connection error. Please try again.\n");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
     		}
     	}
     }
