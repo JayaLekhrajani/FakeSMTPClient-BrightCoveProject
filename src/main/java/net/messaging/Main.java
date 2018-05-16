@@ -25,10 +25,21 @@ public class Main {
 			}
     		return;
     	}
+    	String email;
+    	String message;
+    	String protocol;
     	
-    	String email = args[0];
-    	String message = args[1];
-    	
+    	if(args[0].charAt(0)!='-')
+    	{
+    	protocol = "SMTP";
+    	email = args[0];
+    	message = args[1];
+    	}
+    	else {
+    		protocol = args[0];
+    		email = args[1];
+    		message=args[2];
+    	}
     	String[] emails;
     	//Splitting the email if it contains ','
     	if(email.contains(","))
@@ -41,12 +52,13 @@ public class Main {
     	}
     	String[] invalidEmails = new String[emails.length];
     	int count=0;
+    	//Storing invalid emails in a separate array;
     	for(int i=0;i<emails.length;i++) {
     		if(!emails[i].contains("@")){
     			invalidEmails[count++]=emails[i];
     		}
     	}
-    	
+    	//If exactly one email address is invalid
     	if(count==1)
     	{
     		try {
@@ -59,6 +71,7 @@ public class Main {
     		
     		return; //Returning to prevent further processing.
     	}
+    	//Printing a slightly different message if more than one email addresses are Invalid
     	else if(count>1)
     	{
     		
@@ -80,19 +93,44 @@ public class Main {
     		return; //Returning to prevent further processing.
     	}
     	
-    	//Writing to Network since no error
-    	try {
-    		String result="connect smtp\n";
-    		//looping through all emails
-    		for(int i=0;i<emails.length;i++)
-    		{
-    			result+="To: "+emails[i]+"\n";
+    	
+    	/*
+    	 * Writing to Network since no error
+    	 */
+    	
+    	//If Protocol is SMTP
+    	if("SMTP".equals(protocol))
+    	{
+	    	try {
+	    		String result="connect smtp\n";
+	    		//looping through all emails
+	    		for(int i=0;i<emails.length;i++)
+	    		{
+	    			result+="To: "+emails[i]+"\n";
+	    		}
+	    		result+="\n"+message+"\n\ndisconnect\n";
+				network.write(result);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
+    	
+    	else if("-im".equals(protocol))
+    	{
+    		try {
+    			String result="connect chat\n";
+    			//looping through all emails
+    			for(int i=0;i<emails.length;i++)
+    			{
+    				result+="<"+emails[i]+">("+message+")\n";
+    			}
+    			result+="disconnect\n";
+    			network.write(result);
     		}
-    		result+="\n"+message+"\n\ndisconnect\n";
-			network.write(result);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    		catch(IOException e) {
+    			e.printStackTrace();
+    		}
+    	}
     }
     
 }
