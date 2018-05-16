@@ -29,19 +29,6 @@ public class Main {
     	String email = args[0];
     	String message = args[1];
     	
-    	//Checking if the email contains "@". Not checking if it contains ".com" since it was not specified
-    	if(!email.contains("@"))
-    	{
-    		try {
-    			console.write("Invalid email address: "+email+"\n");
-    		}
-    		catch(IOException e)
-    		{
-    			e.printStackTrace();
-    		}
-    		
-    		return; //Returning to prevent further processing.
-    	}
     	String[] emails;
     	//Splitting the email if it contains ','
     	if(email.contains(","))
@@ -51,6 +38,46 @@ public class Main {
     	else {
     		emails = new String[1];
     		emails[0] = email;
+    	}
+    	String[] invalidEmails = new String[emails.length];
+    	int count=0;
+    	for(int i=0;i<emails.length;i++) {
+    		if(!emails[i].contains("@")){
+    			invalidEmails[count++]=emails[i];
+    		}
+    	}
+    	
+    	if(count==1)
+    	{
+    		try {
+    			console.write("Invalid email address: "+invalidEmails[0]+"\n");
+    		}
+    		catch(IOException e)
+    		{
+    			e.printStackTrace();
+    		}
+    		
+    		return; //Returning to prevent further processing.
+    	}
+    	else if(count>1)
+    	{
+    		
+    		try {
+    			String result="Invalid email addresses:";
+
+    			for(int i=0;i<count;i++)
+    			{
+    				result+=" "+invalidEmails[i];
+    			}
+    			result+="\n";
+    			console.write(result);
+    		}
+    		catch(IOException e)
+    		{
+    			e.printStackTrace();
+    		}
+    		
+    		return; //Returning to prevent further processing.
     	}
     	
     	//Writing to Network since no error
