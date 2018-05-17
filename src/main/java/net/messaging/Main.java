@@ -1,5 +1,4 @@
 package net.messaging;
-
 import java.io.*;
 
 public class Main {
@@ -15,15 +14,17 @@ public class Main {
     }
 
     public static void main(String... args) {
+    	StringBuilder sb=new StringBuilder();
+
     	//Checking if length of arguments is less than 2 or if the second parameter is "", both of which mean no body
     	if(args.length < 2 || args[1].equals(""))
-    	{
+    	{	
+    		sb.append("Cannot send an email with no body.\n");
     		try {
-				console.write("Cannot send an email with no body.\n");
+				console.write(sb.toString());
 			} catch (IOException e) {
-				e.printStackTrace();
+				throw new RuntimeException(e.getMessage());
 			}
-    		return;
     	}
     	String email;
     	String message;
@@ -61,37 +62,23 @@ public class Main {
     	//If exactly one email address is invalid
     	if(count==1)
     	{
-    		try {
-    			console.write("Invalid email address: "+invalidEmails[0]+"\n");
-    		}
-    		catch(IOException e)
-    		{
-    			e.printStackTrace();
-    		}
-    		
-    		return; //Returning to prevent further processing.
+    		sb.append("Invalid email address: ");
     	}
     	//Printing a slightly different message if more than one email addresses are Invalid
     	else if(count>1)
     	{
-    		
-    		try {
-    			String result="Invalid email addresses:";
-
-    			for(int i=0;i<count;i++)
-    			{
-    				result+=" "+invalidEmails[i];
-    			}
-    			result+="\n";
-    			console.write(result);
-    		}
-    		catch(IOException e)
-    		{
-    			e.printStackTrace();
-    		}
-    		
-    		return; //Returning to prevent further processing.
+    		sb.append("Invalid email addresses: ");
     	}
+    	for(int i=0;i<count;i++)
+		{
+			sb.append(" "+invalidEmails[i]);
+		}
+		sb.append("");
+		try {
+			console.write(sb.toString());
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
     	
     	
     	/*
@@ -102,20 +89,19 @@ public class Main {
     	if("SMTP".equals(protocol))
     	{
 	    	try {
-	    		String result="connect smtp\n";
+	    		sb.append("connect smtp\n");
 	    		//looping through all emails
 	    		for(int i=0;i<emails.length;i++)
 	    		{
-	    			result+="To: "+emails[i]+"\n";
+	    			sb.append("To: "+emails[i]+"\n");
 	    		}
-	    		result+="\n"+message+"\n\ndisconnect\n";
-				network.write(result);
+	    		sb.append("\n"+message+"\n\ndisconnect\n");
+				network.write(sb.toString());
 			} catch (IOException e) {
 				try {
 					console.write("Connection error. Please try again.\n");
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					throw new RuntimeException(e1.getMessage());
 				}
 			}
     	}
@@ -123,20 +109,18 @@ public class Main {
     	else if("-im".equals(protocol))
     	{
     		try {
-    			String result="connect chat\n";
-    			//looping through all emails
+    			sb.append("connect chat\n");
     			for(int i=0;i<emails.length;i++)
     			{
-    				result+="<"+emails[i]+">("+message+")\n";
+    				sb.append("<"+emails[i]+">("+message+")\n");
     			}
-    			result+="disconnect\n";
-    			network.write(result);
+    			sb.append("disconnect\n");
+    			network.write(sb.toString());
     		}
     		catch(IOException e) {
     			try {
 					console.write("Connection error. Please try again.\n");
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
     		}
